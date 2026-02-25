@@ -55,7 +55,11 @@ app.post('/api/login', async (req, res) => {
             [email, reg_no]
         );
         if (user.rows.length > 0) {
-            res.status(200).json({ success: true, message: 'Welcome to the Pantheon.' });
+            res.status(200).json({ 
+                success: true, 
+                message: 'Welcome to the Pantheon.',
+                user: { name: user.rows[0].name, reg_no: user.rows[0].reg_no }
+            });
         } else {
             res.status(401).json({ success: false, message: 'Invalid Lore/Credentials.' });
         }
