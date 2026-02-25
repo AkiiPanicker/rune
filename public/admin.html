@@ -9,43 +9,68 @@
 <body class="admin-body">
     <div class="noise-overlay"></div><div class="hero-bg" style="position:fixed; z-index:-1;"></div>
     
-    <div class="container relative-z" style="padding-top: 4rem;">
+    <nav class="navbar scrolled">
+        <div class="nav-container">
+            <a href="index.html" class="logo" style="font-size: 1.5rem;">RUNE<span style="color: var(--color-mythic-gold);">'26 CORE</span></a>
+        </div>
+    </nav>
+
+    <div class="container relative-z" style="padding-top: 7rem; padding-bottom: 3rem;">
         <h2 class="section-title" style="color:var(--color-blood-red); text-shadow:var(--shadow-glow-red); text-align:left;">✦ OMNISCIENCE PANEL</h2>
         
-        <div class="admin-grid" style="grid-template-columns: 2fr 1fr;">
+        <div class="admin-grid" style="grid-template-columns: 1.8fr 1.2fr; gap: 3rem;">
             
-            <!-- Mortal Ledger & Bans -->
+            <!-- Left Column: Registry & Ban UI -->
             <div class="glass-panel stat-col">
                 <div style="display:flex; gap: 2rem; margin-bottom:2rem;">
                     <div class="ticket-card stat-box" style="flex:1;">
                         <p class="section-subtitle">TOTAL AWAKENED</p>
                         <h3 id="stat-users" class="glitch-text" data-text="..." style="font-size:3.5rem;">...</h3>
                     </div>
-                    <div class="ticket-card stat-box" style="flex:1; border-color:var(--color-blood-red);">
-                        <p class="section-subtitle">THE EXILED (Bans)</p>
-                        <h3 style="font-size:2rem; margin-top:1rem;">Manual DB Level Lockout</h3>
-                    </div>
                 </div>
 
                 <div class="ticket-card" style="padding:2rem;">
                     <h4 style="color:var(--color-mythic-gold); margin-bottom:1rem;">Active Realm Register</h4>
-                    <div style="max-height: 400px; overflow-y:auto; padding-right:1rem;">
+                    <div style="max-height: 500px; overflow-y:auto; padding-right:1rem;">
                         <ul id="user-admin-list" class="recent-list">
-                            <!-- JS Will Build: John Doe | Reg No | BANISH BTN -->
+                            <!-- JS Instantiates Matrix Here -->
                         </ul>
                     </div>
                 </div>
             </div>
 
-            <!-- Oracle FAQs Control -->
-            <div class="ticket-card" style="padding:2rem;">
-                <h4 style="margin-bottom:1.5rem; text-shadow:0 0 10px rgba(255,255,255,0.2);">Incoming Prophecies (FAQs)</h4>
-                <div id="pending-faqs">
-                    <!-- Oracle Queries will go here via JS -->
-                    <p style="font-size: 0.85rem; color:var(--color-text-muted);">The timeline is silent.</p>
+            <!-- Right Column: Gate QR Scanner & FAQs -->
+            <div>
+                <!-- LIVE GATE SCANNER MODULE -->
+                <div class="ticket-card" style="padding: 2rem; border-color:var(--color-blood-red); display:flex; flex-direction:column; align-items:center; margin-bottom: 2rem;">
+                    <h4 style="text-shadow:var(--shadow-glow-red); text-transform:uppercase; color:var(--color-text-main);">Gate Scanner</h4>
+                    <p style="font-size: 0.8rem; color:var(--color-text-muted);">Ensure this field is active. Handheld QR Scanners natively emulate Enter key bindings upon optical fetch.</p>
+                    
+                    <div class="scanner-box" style="width: 200px; height: 200px;">
+                        <div class="scanner-brackets"></div>
+                        <div class="scan-line" id="scan-laser" style="display:none;"></div>
+                        <p class="scan-status" id="scan-status">AWAITING CODE...</p>
+                    </div>
+
+                    <!-- Hidden Input capturing keystrokes directly -->
+                    <input type="text" id="scanner-input" class="auth-input" placeholder="Physical Hand-scanner bound..." autofocus style="margin-bottom: 10px; border-color:var(--color-blood-red); background:rgba(0,0,0,0.8); text-align:center;">
+                    <button id="manual-scan-btn" class="btn-primary" style="width:100%; font-size: 0.8rem; padding:0.5rem;">Override/Verify (ENTER)</button>
+                </div>
+
+                <!-- ADD & RESOLVE FAQS MODULE -->
+                <div class="ticket-card" style="padding:2rem;">
+                    <h4 style="margin-bottom:1rem; color:var(--color-mythic-gold);">Add To Lore (FAQ)</h4>
+                    <input type="text" id="manual-q" placeholder="Type new Prophecy (Question)..." class="auth-input" style="margin-bottom:10px;">
+                    <input type="text" id="manual-a" placeholder="Carve Answer..." class="auth-input" style="margin-bottom:10px;">
+                    <button id="add-manual-faq" class="btn-secondary" style="width:100%; font-size: 0.8rem; padding:0.5rem; margin-bottom:2rem;">+ Carve Into Realm FAQ</button>
+
+                    <h4 style="margin-bottom:1rem; border-top:1px solid rgba(255,255,255,0.1); padding-top:1rem;">Incoming Queries</h4>
+                    <div id="pending-faqs">
+                        <p style="font-size: 0.85rem; color:var(--color-text-muted);">The timeline is silent.</p>
+                    </div>
                 </div>
             </div>
-            
+
         </div>
     </div>
     <script src="admin.js"></script>

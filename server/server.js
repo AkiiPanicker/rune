@@ -123,6 +123,43 @@ app.post('/api/admin/publish-faq', async (req, res) => {
         res.json({ success: true });
     } catch (err) { res.status(500).json({success: false}); }
 });
+// --- NEW: Physical Gate Scanner Processing ---
+app.post('/api/admin/scan', async (req, res) => {
+    const { admin_reg, qr_data } = req.body;
+    if (admin_reg !== '235805126') return res.status(403).json({ success: false });
+
+    // Ensure the QR is actually a RUNE domain pass
+    if (!qr_data.startsWith('RUNE26-')) return res.status(400).json({ success: false, message: 'INVALID DOMAIN RIFT. FORGERY DETECTED.' });
+    
+    const target_reg = qr_data.replace('RUNE26-', '');
+    try {
+        // Find User
+        const result = await pool.query('SELECT * FROM users WHERE reg_no = $1', [target_reg]);
+        if (result.rows.length === 0) return res.status(404).json({ success: false, message: 'SOUL NOT FOUND.' });
+
+        const soul = result.rows[0];
+        
+        // Logical Gate Checks
+        if (soul.is_banned) return res.status(403).json({ success: false, message: 'BANNED. ALERT GUARDS.' });
+        if (soul.has_entered) return res.status(400).json({ success: false, message: 'SOUL IS ALREADY INSIDE THE REALM.' });
+
+        // Update to Present
+        await pool.query('UPDATE users SET has_entered = TRUE WHERE reg_no = $1', [target_reg]);
+        res.status(200).json({ success: true, message: `ADMIT GRANTED: ${soul.name.toUpperCase()}` });
+    } catch (error) {
+        res.status(500).json({ success: false, message: 'Server glitch processing admission.' });
+    }
+});
+
+// --- NEW: Add FAQ Manually ---
+app.post('/api/admin/add-faq-manual', async (req, res) => {
+    const { admin_reg, question, answer } = req.body;
+    if (admin_reg !== '235805126') return res.status(403).json({ success: false });
+    try {
+        await pool.query('INSERT INTO faqs (question, answer) VALUES ($1, $2)', [question, answer]);
+        res.json({ success: true });
+    } catch (err) { res.status(500).json({ success: false }); }
+});
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Realm running on port ${PORT}`));
