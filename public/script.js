@@ -142,18 +142,22 @@ document.addEventListener('DOMContentLoaded', () => {
         const oldNavCta = document.querySelector('.nav-cta');
         if (oldNavCta) {
             const profileHtml = `
-                <div class="user-profile relative-z" id="nav-profile-container">
-                    <div class="profile-circle" id="profile-toggle" title="${user.name}">${initial}</div>
-                    <div class="profile-dropdown hidden" id="profile-dropdown">
-                        <p class="dropdown-greeting">A W A K E N E D</p>
-                        <p class="dropdown-name" style="margin-bottom:15px;">${user.name.split(' ')[0]}</p>
-                        ${adminLinkHTML}
-                        <hr style="border:0; border-top:1px solid rgba(255,255,255,0.1); margin-bottom:1rem;">
-                        <button id="logout-btn" class="dropdown-link" style="background:transparent;border:none;width:100%;">Sever Link</button>
-                    </div>
+            <div class="user-profile relative-z" id="nav-profile-container">
+                <div class="profile-circle" id="profile-toggle" title="${user.name}">${initial}</div>
+                <div class="profile-dropdown hidden" id="profile-dropdown">
+                    <p class="dropdown-greeting">A W A K E N E D</p>
+                    <p class="dropdown-name" style="margin-bottom:15px;">${user.name.split(' ')[0]}</p>
+                    
+                    <!-- NEW TICKET LINK HERE -->
+                    <a href="dashboard.html" class="dropdown-link" style="display:block; margin-bottom:10px;">◈ View Domain Pass (QR)</a>
+                    
+                    ${adminLinkHTML}
+                    <hr style="border:0; border-top:1px solid rgba(255,255,255,0.1); margin-bottom:1rem;">
+                    <button id="logout-btn" class="dropdown-link" style="background:transparent;border:none;width:100%;">Sever Link</button>
                 </div>
-            `;
-            oldNavCta.outerHTML = profileHtml;
+            </div>
+        `;
+        oldNavCta.outerHTML = profileHtml;
 
             // Link Dropdown Events 
             const toggle = document.getElementById('profile-toggle');
@@ -186,8 +190,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // 5b. Update Hero Button indicating domain entry granted
         const heroPrimary = document.querySelector('.hero-actions .btn-primary');
         if (heroPrimary) {
-            heroPrimary.textContent = "Access Granted";
-            heroPrimary.href = "#lore";
+            heroPrimary.textContent = "View Digital Pass (QR)"; // Make it clear!
+            heroPrimary.href = "dashboard.html"; // Open ticket instead of scrolling!
             heroPrimary.style.borderColor = "var(--color-mythic-gold)";
             heroPrimary.style.boxShadow = "var(--shadow-glow-gold)";
             heroPrimary.style.color = "var(--color-mythic-gold)";
