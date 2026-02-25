@@ -69,6 +69,32 @@ app.post('/api/login', async (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
+// Admin / God Mode Stats Route
+app.post('/api/admin/stats', async (req, res) => {
+    const { reg_no } = req.body;
+    
+    // Hardcoded check: Only YOU (Akshat) can summon this data
+    if (reg_no !== '235805126') {
+        return res.status(403).json({ success: false, message: 'Forbidden. Mortal bounds apply.' });
+    }
+
+    try {
+        // Query Live Total Users
+        const countResult = await pool.query('SELECT COUNT(*) FROM users');
+        const totalUsers = countResult.rows[0].count;
+
+        // Query the latest 5 signups to show live activity
+        const recentResult = await pool.query('SELECT name, reg_no, created_at FROM users ORDER BY id DESC LIMIT 5');
+        
+        res.status(200).json({ 
+            success: true, 
+            totalUsers,
+            recentUsers: recentResult.rows
+        });
+    } catch (error) {
+        res.status(500).json({ success: false, message: 'The prophecy scroll is jammed.' });
+    }
+});
 app.listen(PORT, () => {
     console.log(`Realm running on port ${PORT}`);
 });

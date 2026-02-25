@@ -132,6 +132,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // SCENARIO 1: User is completely logged in.
         const user = JSON.parse(userState);
         const initial = user.name.charAt(0).toUpperCase();
+        // Only grant God Mode Link to Akshat's Registration ID
+        const isAdmin = user.reg_no === '235805126';
+        const adminLinkHTML = isAdmin 
+            ? `<a href="admin.html" class="dropdown-link" style="color:var(--color-blood-red); display:block; margin-bottom:15px; font-weight:bold; text-shadow:0 0 10px var(--color-blood-glow);">✦ OMNISCIENCE (Admin)</a>` 
+            : ``;
 
         // 5a. Replace the Top-Right "Summon Your Pass" Nav button with the Profile Circle
         const oldNavCta = document.querySelector('.nav-cta');
@@ -141,9 +146,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="profile-circle" id="profile-toggle" title="${user.name}">${initial}</div>
                     <div class="profile-dropdown hidden" id="profile-dropdown">
                         <p class="dropdown-greeting">A W A K E N E D</p>
-                        <p class="dropdown-name">${user.name.split(' ')[0]}</p>
-                        <hr style="border:0; border-top:1px solid rgba(255,255,255,0.1); margin:1rem 0;">
-                        <button id="logout-btn" class="dropdown-link" style="background:transparent;border:none;width:100%;">Sever Link (Log out)</button>
+                        <p class="dropdown-name" style="margin-bottom:15px;">${user.name.split(' ')[0]}</p>
+                        ${adminLinkHTML}
+                        <hr style="border:0; border-top:1px solid rgba(255,255,255,0.1); margin-bottom:1rem;">
+                        <button id="logout-btn" class="dropdown-link" style="background:transparent;border:none;width:100%;">Sever Link</button>
                     </div>
                 </div>
             `;
