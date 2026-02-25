@@ -1,0 +1,61 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Grimoire | RUNE'26</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;800&family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="admin-body">
+    <div class="noise-overlay"></div>
+    <div class="hero-bg" style="position: fixed; z-index:-1;"></div>
+
+    <nav class="navbar scrolled">
+        <div class="nav-container">
+            <a href="index.html" class="logo">RUNE<span>'26</span></a>
+            <div style="display: flex; gap:1.5rem;">
+                <a href="index.html" class="btn-primary" style="padding: 0.5rem 1rem;">Back to Main Lore</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container section relative-z flex-center" style="padding-top: 8rem; min-height:100vh;">
+        <div class="ticket-card featured" style="max-width: 500px; width: 100%; border-color:var(--color-mythic-gold);">
+            
+            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:1rem; margin-bottom: 2rem;">
+                <div>
+                    <p class="section-subtitle" style="text-align:left; margin:0;">DOMAIN ID</p>
+                    <h3 id="dash-name" style="font-size:1.8rem; color:#fff;">Soul Fetching...</h3>
+                </div>
+                <div id="dash-rune" class="mythic-rune" style="font-size:3.5rem; animation:none; text-shadow:var(--shadow-glow-gold);"></div>
+            </div>
+
+            <!-- Glowing Digital Pass Code View -->
+            <div style="background: rgba(0,0,0,0.5); padding:2rem; border-radius: 8px; border: var(--glass-border); position: relative; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+                <p id="dash-tier" class="featured-badge" style="top:-15px;">A W A K E N E D</p>
+                <div style="background: white; padding: 15px; border-radius: 4px; display:inline-block; box-shadow: 0 0 30px var(--color-gold-glow); transition: 0.3s;" id="qr-frame">
+                    <img id="qr-image" src="" alt="Domain Pass QR" style="width: 200px; height: 200px; filter: grayscale(1) contrast(3);">
+                </div>
+                <p style="font-family:var(--font-heading-alt); letter-spacing:4px; margin-top:2rem; color:var(--color-text-muted); font-size: 0.8rem;" id="dash-reg">REGISTRATION</p>
+            </div>
+
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const state = localStorage.getItem('user');
+            if(!state) return window.location.href = 'index.html';
+            
+            const user = JSON.parse(state);
+            document.getElementById('dash-name').innerText = user.name.split(" ")[0]; // First name only
+            document.getElementById('dash-reg').innerText = `R-` + user.reg_no;
+            
+            if (user.tier) document.getElementById('dash-tier').innerText = user.tier;
+            if (user.rune) document.getElementById('dash-rune').innerText = user.rune;
+
+            // Generate flawless Entry Code utilizing public rapid QR endpoints pointing specifically to their Student DB Node mapping natively
+            document.getElementById('qr-image').src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=RUNE26-${user.reg_no}&bgcolor=ffffff&color=000000&margin=5`;
+        });
+    </script>
+</body>
+</html>

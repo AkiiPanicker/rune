@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+    // Handlers for Registration Process
     const signupForm = document.getElementById('signup-form');
     if (signupForm) {
         signupForm.addEventListener('submit', async (e) => {
@@ -12,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const emailStr = document.getElementById('su-email').value;
             const phoneStr = document.getElementById('su-phone').value;
 
+            // Strict Realm Validations
             if (!/^\d{9}$/.test(regStr)) { 
                 msgObj.textContent = "Registration Number must be exactly 9 digits."; return; 
             }
@@ -38,11 +40,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (result.success) {
                     msgObj.style.color = "var(--color-mythic-gold)";
                     
-                    // SAVE USER TO LOCAL BROWSER SESSION & REMEMBER THEY HAVE AN ACCOUNT
-                    localStorage.setItem('user', JSON.stringify({ name: result.user.name, reg_no: result.user.reg_no }));
+                    // NEW: Update Local Storage parameters to include Rune and Tier Status 
+                    localStorage.setItem('user', JSON.stringify({ 
+                        name: result.user.name, 
+                        reg_no: result.user.reg_no,
+                        tier: result.user.tier,     // <-- For the Digital Pass Grimoire
+                        rune: result.user.rune      // <-- For the Mythic aesthetic Grimoire
+                    }));
                     localStorage.setItem('hasAccount', 'true');
 
-                    setTimeout(() => window.location.href = 'index.html', 1500); 
+                    // NEW: Go to digital QR ticket page immediately!
+                    setTimeout(() => window.location.href = 'dashboard.html', 1500); 
                 } else {
                     msgObj.style.color = "var(--color-blood-red)";
                 }
@@ -52,6 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Handlers for returning Mortals/Domain Re-entry
     const loginForm = document.getElementById('login-form');
     if (loginForm) {
         loginForm.addEventListener('submit', async (e) => {
@@ -76,11 +85,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (result.success) {
                     msgObj.style.color = "var(--color-mythic-gold)";
                     
-                    localStorage.setItem('user', JSON.stringify({ name: result.user.name, reg_no: result.user.reg_no }));
-                    localStorage.setItem('hasAccount', 'true'); // They are an existing member
+                    // SAVE USER SESSION Including Rune parameters
+                    localStorage.setItem('user', JSON.stringify({ 
+                        name: result.user.name, 
+                        reg_no: result.user.reg_no,
+                        tier: result.user.tier, 
+                        rune: result.user.rune
+                    }));
+                    localStorage.setItem('hasAccount', 'true'); 
 
-                    setTimeout(() => window.location.href = 'index.html', 1000);
+                    // Ensure user bounces to Digital Dashboard NOT index
+                    setTimeout(() => window.location.href = 'dashboard.html', 1000);
                 } else {
+                    // This perfectly handles the newly injected "[Banned] YOU ARE EXILED" Backend prompt visually!!
                     msgObj.style.color = "var(--color-blood-red)";
                 }
             } catch (err) {

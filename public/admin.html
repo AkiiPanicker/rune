@@ -7,59 +7,47 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="admin-body">
-    <div class="noise-overlay"></div>
-    <div class="hero-bg" style="position: fixed; z-index:-1;"></div>
-
-    <nav class="navbar scrolled">
-        <div class="nav-container">
-            <a href="index.html" class="logo" style="font-size: 1.5rem;">RUNE<span style="color: var(--color-mythic-gold);">'26 CORE</span></a>
-            <a href="index.html" class="btn-secondary nav-cta" style="padding: 0.5rem 1rem;">Leave Chamber</a>
-        </div>
-    </nav>
-
-    <div class="container section relative-z" style="padding-top: 8rem; min-height:100vh;">
-        <h2 class="section-title" style="color:var(--color-blood-red); text-shadow:var(--shadow-glow-red); text-align:left;">OMNISCIENCE</h2>
+    <div class="noise-overlay"></div><div class="hero-bg" style="position:fixed; z-index:-1;"></div>
+    
+    <div class="container relative-z" style="padding-top: 4rem;">
+        <h2 class="section-title" style="color:var(--color-blood-red); text-shadow:var(--shadow-glow-red); text-align:left;">✦ OMNISCIENCE PANEL</h2>
         
-        <div class="admin-grid">
+        <div class="admin-grid" style="grid-template-columns: 2fr 1fr;">
             
-            <!-- Statistics Panel -->
+            <!-- Mortal Ledger & Bans -->
             <div class="glass-panel stat-col">
-                <div class="ticket-card stat-box" style="padding:2rem;">
-                    <p class="section-subtitle" style="margin-bottom:0.5rem; color:var(--color-mythic-gold);">Total Souls Summoned</p>
-                    <h3 id="stat-users" class="glitch-text" data-text="..." style="font-size:3.5rem;">...</h3>
-                </div>
-
-                <div class="ticket-card stat-box" style="padding:2rem;">
-                    <p class="section-subtitle" style="margin-bottom:0.5rem;">Offerings Treasury (Test)</p>
-                    <h3 style="font-size:3.5rem; font-family:var(--font-heading); color:var(--color-text-main);">₹1,25,000</h3>
-                </div>
-
-                <div class="ticket-card" style="padding:2rem; background:rgba(10,5,20,0.8); border:var(--glass-border);">
-                    <h4 style="margin-bottom:1rem; color:var(--color-mythic-gold);">Recent Rituals (Signups)</h4>
-                    <ul id="recent-list" class="recent-list">
-                        <li>Consulting oracle...</li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Gate Scanner Panel -->
-            <div class="glass-panel qr-col">
-                <div class="qr-container">
-                    <h4 style="color: var(--color-text-muted); text-transform:uppercase; letter-spacing:2px; margin-bottom:1rem; text-align:center;">Gate Scanner Viewport</h4>
-                    
-                    <div class="scanner-box">
-                        <div class="scanner-brackets"></div>
-                        <div class="scan-line"></div>
-                        <p class="scan-status" id="scan-status">AWAITING TICKET RUNES...</p>
+                <div style="display:flex; gap: 2rem; margin-bottom:2rem;">
+                    <div class="ticket-card stat-box" style="flex:1;">
+                        <p class="section-subtitle">TOTAL AWAKENED</p>
+                        <h3 id="stat-users" class="glitch-text" data-text="..." style="font-size:3.5rem;">...</h3>
                     </div>
+                    <div class="ticket-card stat-box" style="flex:1; border-color:var(--color-blood-red);">
+                        <p class="section-subtitle">THE EXILED (Bans)</p>
+                        <h3 style="font-size:2rem; margin-top:1rem;">Manual DB Level Lockout</h3>
+                    </div>
+                </div>
 
-                    <button id="test-scan-btn" class="btn-primary" style="width:100%; margin-top:2rem;">Simulate QR Admission</button>
+                <div class="ticket-card" style="padding:2rem;">
+                    <h4 style="color:var(--color-mythic-gold); margin-bottom:1rem;">Active Realm Register</h4>
+                    <div style="max-height: 400px; overflow-y:auto; padding-right:1rem;">
+                        <ul id="user-admin-list" class="recent-list">
+                            <!-- JS Will Build: John Doe | Reg No | BANISH BTN -->
+                        </ul>
+                    </div>
                 </div>
             </div>
 
+            <!-- Oracle FAQs Control -->
+            <div class="ticket-card" style="padding:2rem;">
+                <h4 style="margin-bottom:1.5rem; text-shadow:0 0 10px rgba(255,255,255,0.2);">Incoming Prophecies (FAQs)</h4>
+                <div id="pending-faqs">
+                    <!-- Oracle Queries will go here via JS -->
+                    <p style="font-size: 0.85rem; color:var(--color-text-muted);">The timeline is silent.</p>
+                </div>
+            </div>
+            
         </div>
     </div>
-    
     <script src="admin.js"></script>
 </body>
 </html>

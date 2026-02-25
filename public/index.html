@@ -160,7 +160,7 @@
                 <div class="ticket-card">
                     <div class="ticket-header">
                         <h3>Mortal</h3>
-                        <p class="price">₹499</p>
+                        <p class="price" style="font-size:1.5rem; letter-spacing:4px; color:var(--color-blood-red)">FREE ADMIT</p>
                     </div>
                     <ul class="ticket-features">
                         <li>General Admission</li>
@@ -174,7 +174,7 @@
                     <div class="featured-badge">Most Chosen</div>
                     <div class="ticket-header">
                         <h3>Awakened</h3>
-                        <p class="price">₹999</p>
+                        <p class="price" style="font-size:1.5rem; letter-spacing:4px; color:var(--color-blood-red)">PRIORITY FREE</p>
                     </div>
                     <ul class="ticket-features">
                         <li>Priority Admission</li>
@@ -188,7 +188,7 @@
                 <div class="ticket-card">
                     <div class="ticket-header">
                         <h3>Deity</h3>
-                        <p class="price">₹2499</p>
+                        <p class="price" style="font-size:1.5rem; letter-spacing:4px; color:var(--color-blood-red)">CORE ADMINS</p>
                     </div>
                     <ul class="ticket-features">
                         <li>VIP Admission</li>
@@ -201,6 +201,25 @@
             </div>
         </div>
     </section>
+    <!-- The Oracle's Chamber / FAQ -->
+<section id="oracle" class="section">
+    <div class="container reveal">
+        <h2 class="section-title" style="margin-bottom:1rem;">Oracle's Chamber</h2>
+        <p class="section-subtitle">Speak with the fates (FAQs).</p>
+        
+        <!-- Accordions Populated By JS -->
+        <div id="faq-list" style="margin-bottom:3rem; max-width:800px; margin-inline:auto;">
+             <!-- Loading Content via DOM Listener.. -->
+        </div>
+
+        <div style="max-width:600px; margin: 0 auto; background:rgba(10,5,20,0.7); border:var(--glass-border); padding: 2rem; border-radius: 8px;">
+            <h4 style="color:var(--color-mythic-gold); margin-bottom:1rem; text-align:center;">Ask The Oracle</h4>
+            <input type="text" id="oracle-ask-txt" placeholder="Whisper your prophecy/query..." class="auth-input" style="margin-bottom: 1rem;">
+            <button id="oracle-ask-btn" class="btn-primary" style="width: 100%;">Whisper To Domain</button>
+            <p id="oracle-status" style="margin-top:1rem; text-align:center; font-size:0.8rem;"></p>
+        </div>
+    </div>
+</section>
 
     <!-- Sponsors Section -->
     <section id="sponsors" class="section sponsors-section">

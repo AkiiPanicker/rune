@@ -201,6 +201,44 @@ document.addEventListener('DOMContentLoaded', () => {
             // In a future step, this void(0) could launch the Payment Dashboard Instead!
         });
 
+        // === 6. THE ORACLE FAQ ENGINE FETCH / INTERACTION SYSTEM ====
+    const fetchFaqs = async () => {
+        try {
+            const listObj = document.getElementById('faq-list');
+            if(!listObj) return;
+
+            const fqData = await fetch('/api/faqs').then(r => r.json());
+            listObj.innerHTML = fqData.data.map((faq, i) => `
+                <div class="faq-card" style="border: 1px solid rgba(224,170,255,0.2); padding: 1.5rem; border-radius:4px; margin-bottom: 1rem; cursor:pointer;" onclick="this.classList.toggle('active')">
+                    <h3 style="color:#e0aaff; font-family:var(--font-heading); font-size:1.2rem;">${faq.question} 
+                       <span style="float:right; opacity:0.5;">+</span></h3>
+                    <div class="faq-ans" style="margin-top:10px; color:var(--color-text-muted); display:none; padding-top:1rem; border-top: 1px solid rgba(255,255,255,0.05);">${faq.answer}</div>
+                </div>
+            `).join('');
+
+            // Adding tiny dynamic drop downs into logic immediately
+            document.querySelectorAll('.faq-card').forEach(card => {
+                card.addEventListener('click', () => { 
+                   const content = card.querySelector('.faq-ans');
+                   content.style.display = content.style.display === 'block' ? 'none' : 'block';
+                });
+            });
+
+            const submitQuery = document.getElementById('oracle-ask-btn');
+            submitQuery.addEventListener('click', async () => {
+               if(!userState) return document.getElementById('oracle-status').innerText = 'Mortals must sign-in/awaken to speak.';
+               const msg = document.getElementById('oracle-ask-txt').value;
+               if(msg.trim() === '') return;
+               
+               await fetch('/api/ask', {method: 'POST', headers:{'Content-Type': 'application/json'}, body:JSON.stringify({reg_no: JSON.parse(userState).reg_no, question: msg})});
+               document.getElementById('oracle-status').innerText = 'Prophecy recorded across dimensions!';
+               document.getElementById('oracle-ask-txt').value = '';
+            });
+
+        } catch (e){}
+    }
+    fetchFaqs();
+
     } else if (hasAccount === 'true') {
         // SCENARIO 2: Logged out, but system remembers they have an account 
         // Redirect standard registration buttons towards login!
