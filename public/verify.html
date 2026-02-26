@@ -1,0 +1,88 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gateway Check | RUNE'26</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;800&family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="auth-page flex-center min-h-screen">
+    <div class="noise-overlay"></div>
+    <div class="hero-bg" style="position: fixed;"></div>
+
+    <div class="container relative-z">
+        <div class="ticket-card featured" style="max-width: 400px; margin:0 auto; border-color:var(--color-mythic-gold); text-align: center; padding:3rem 2rem;">
+            
+            <div id="loading-block">
+                <div class="mythic-rune" style="font-size:3rem; margin-bottom:1rem; animation: pulse-glow 1s infinite alternate;">ᛟ</div>
+                <h3 style="color:#fff;">DECRYPTING RUNES...</h3>
+                <p style="color:var(--color-text-muted); font-size:0.8rem;">Querying the Pantheon network</p>
+            </div>
+
+            <div id="admin-block" style="display:none;">
+                <h3 style="color:var(--color-blood-red); text-shadow:0 0 15px var(--color-blood-glow); margin-bottom: 0.5rem; letter-spacing: 4px;">SYSTEM ADMIN</h3>
+                <p id="t-user" style="color:var(--color-mythic-gold); font-size:1.5rem; font-family:var(--font-heading); margin-bottom:0.5rem;"></p>
+                <p id="t-reg" style="color:#fff; font-family:monospace; margin-bottom: 2rem;"></p>
+                
+                <button id="burn-btn" class="btn-primary" style="width: 100%; border-color:#1aff1a; color:#1aff1a;">VERIFY & GRANT ADMIT (BURN TICKET)</button>
+                <p id="admin-msg" style="margin-top: 1rem; font-family: var(--font-heading-alt); letter-spacing: 1px;"></p>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const params = new URLSearchParams(window.location.search);
+            const targetTicket = params.get('ticket');
+            
+            if(!targetTicket) return window.location.href = 'index.html';
+
+            const userState = localStorage.getItem('user');
+            const currentUser = userState ? JSON.parse(userState) : null;
+
+            // SCENARIO 1: ADMIN SCANNING A TICKET USING PHONE
+            if(currentUser && currentUser.reg_no === '235805126') {
+                document.getElementById('loading-block').style.display = 'none';
+                document.getElementById('admin-block').style.display = 'block';
+                document.getElementById('t-user').innerText = 'Validating Registration...';
+                document.getElementById('t-reg').innerText = `RUNE26-${targetTicket}`;
+
+                const btn = document.getElementById('burn-btn');
+                const msgBox = document.getElementById('admin-msg');
+
+                btn.addEventListener('click', async () => {
+                    btn.innerText = "OVERWRITING DATABASE...";
+                    const res = await fetch('/api/admin/scan', {
+                        method: 'POST', headers: {'Content-Type':'application/json'},
+                        body: JSON.stringify({ admin_reg: currentUser.reg_no, qr_data: targetTicket })
+                    });
+                    const d = await res.json();
+                    
+                    btn.style.display = 'none';
+                    if(d.success) {
+                        msgBox.innerText = `ADMITTED INSIDE: RUNE26-${targetTicket}`;
+                        msgBox.style.color = '#1aff1a';
+                    } else {
+                        msgBox.innerText = d.message;
+                        msgBox.style.color = 'var(--color-blood-red)';
+                    }
+                    setTimeout(()=> window.location.href='admin.html', 3500); // Send back to command center
+                });
+
+            } else {
+                // SCENARIO 2: PUBLIC USER SCANS URL -> AUTO LOG IN & ROUTE TO THEIR GRIMOIRE DASHBOARD!
+                try {
+                    const res = await fetch('/api/auto-login', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({reg_no: targetTicket}) });
+                    const d = await res.json();
+                    if (d.success) {
+                        localStorage.setItem('user', JSON.stringify({name: d.user.name, reg_no: d.user.reg_no, tier: d.user.tier, rune: d.user.rune}));
+                        localStorage.setItem('hasAccount', 'true');
+                        window.location.href = 'dashboard.html';
+                    } else { window.location.href = 'login.html'; }
+                } catch(e) { window.location.href = 'login.html'; }
+            }
+        });
+    </script>
+</body>
+</html>

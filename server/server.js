@@ -72,6 +72,24 @@ app.post('/api/login', async (req, res) => {
         res.status(500).json({ success: false, message: 'Server error during awakening.' });
     }
 });
+// AUTO-LOGIN ROUTE (For Camera Web-Scans)
+app.post('/api/auto-login', async (req, res) => {
+    const { reg_no } = req.body;
+    try {
+        const user = await pool.query('SELECT * FROM users WHERE reg_no = $1', [reg_no]);
+        if (user.rows.length > 0) {
+            const loggedInUser = user.rows[0];
+            if (loggedInUser.is_banned) return res.status(403).json({ success: false, message: 'BANISHED.' });
+
+            res.status(200).json({ 
+                success: true, 
+                user: { name: loggedInUser.name, reg_no: loggedInUser.reg_no, tier: loggedInUser.ticket_tier, rune: loggedInUser.rune_mark }
+            });
+        } else {
+            res.status(404).json({ success: false, message: 'Invalid Lore/Credentials.' });
+        }
+    } catch (error) { res.status(500).json({ success: false }); }
+});
 
 // ----------------- ORACLE / FAQ ENDPOINTS -----------------
 // GET Approved FAQs for homepage
@@ -121,9 +139,7 @@ app.get('/api/sponsors', async (req, res) => {
 });
 
 
-// ==================== ADMIN CMS DYNAMIC CONTROLS ====================
 
-// Add & Delete Artist
 // Add & Delete Artist (Using External URLs now!)
 app.post('/api/admin/add-artist', async (req, res) => {
     const { admin_reg, name, role, image_url } = req.body;
@@ -182,14 +198,15 @@ app.post('/api/admin/publish-faq', async (req, res) => {
     } catch (err) { res.status(500).json({success: false}); }
 });
 // --- NEW: Physical Gate Scanner Processing ---
+// --- Physical Gate Scanner Processing ---
 app.post('/api/admin/scan', async (req, res) => {
     const { admin_reg, qr_data } = req.body;
     if (admin_reg !== '235805126') return res.status(403).json({ success: false });
 
-    // Ensure the QR is actually a RUNE domain pass
-    if (!qr_data.startsWith('RUNE26-')) return res.status(400).json({ success: false, message: 'INVALID DOMAIN RIFT. FORGERY DETECTED.' });
-    
-    const target_reg = qr_data.replace('RUNE26-', '');
+    // Clean the QR payload (handles both old raw formats and new Web URLs natively)
+    let target_reg = qr_data;
+    if (target_reg.includes('?ticket=')) target_reg = target_reg.split('?ticket=')[1];
+    else if (target_reg.startsWith('RUNE26-')) target_reg = target_reg.replace('RUNE26-', '');
     try {
         // Find User
         const result = await pool.query('SELECT * FROM users WHERE reg_no = $1', [target_reg]);

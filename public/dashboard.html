@@ -54,8 +54,10 @@
             if (user.rune) document.getElementById('dash-rune').innerText = user.rune;
 
             // Generate flawless Entry Code utilizing public rapid QR endpoints pointing specifically to their Student DB Node mapping natively
-            document.getElementById('qr-image').src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=RUNE26-${user.reg_no}&bgcolor=ffffff&color=000000&margin=5`;
-        });
+// Generate flawless Entry Code bridging native domain URIs directly to phone cameras
+            const qrUrl = window.location.origin + '/verify.html?ticket=' + user.reg_no;
+            const safeQrUrl = encodeURIComponent(qrUrl);
+            document.getElementById('qr-image').src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${safeQrUrl}&bgcolor=ffffff&color=000000&margin=5`;        });
     </script>
 </body>
 </html>
