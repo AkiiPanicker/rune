@@ -258,31 +258,33 @@ document.addEventListener('DOMContentLoaded', () => {
             // Fetch Artists
             const artistContainer = document.getElementById('dynamic-artists');
             if (artistContainer) {
+                // Fetch Artists
+            const artistContainer = document.getElementById('dynamic-artists');
+            if (artistContainer) {
                 const artRes = await fetch('/api/artists').then(r => r.json());
                 
-                // IF EMPTY: Show Placeholders natively
+                // FALLBACK: Perfect 3-column Slim Mysterious Grids!
                 if (artRes.data.length === 0) {
                     artistContainer.innerHTML = `
-                        <div class="artist-card"><div class="artist-image ph-1"><div class="artist-overlay"></div><span class="rune-symbol">?</span></div><div class="artist-info"><h3 style="color:var(--color-text-muted);">First Headliner</h3><p style="color:var(--color-mythic-gold);">TBA...</p></div></div>
-                        <div class="artist-card"><div class="artist-image ph-2"><div class="artist-overlay"></div><span class="rune-symbol">❖</span></div><div class="artist-info"><h3 style="color:var(--color-text-muted);">Dark Ritual</h3><p style="color:var(--color-mythic-gold);">TBA...</p></div></div>
-                        <div class="artist-card"><div class="artist-image ph-3"><div class="artist-overlay"></div><span class="rune-symbol">⟁</span></div><div class="artist-info"><h3 style="color:var(--color-text-muted);">The Weaver</h3><p style="color:var(--color-mythic-gold);">TBA...</p></div></div>
+                        <div class="artist-card"><div class="artist-image ph-1"><div class="artist-overlay"></div><span class="rune-symbol">?</span></div><div class="artist-info"><h3 style="color:var(--color-text-muted); font-style:italic;">Phase I Form</h3><p style="color:var(--color-mythic-gold); font-size:0.8rem; letter-spacing:1px; font-family:var(--font-heading-alt);">TBD...</p></div></div>
+                        <div class="artist-card"><div class="artist-image ph-2"><div class="artist-overlay"></div><span class="rune-symbol" style="font-size:3.5rem;">❖</span></div><div class="artist-info"><h3 style="color:var(--color-text-muted); font-style:italic;">Dark Element</h3><p style="color:var(--color-mythic-gold); font-size:0.8rem; letter-spacing:1px; font-family:var(--font-heading-alt);">TBD...</p></div></div>
+                        <div class="artist-card"><div class="artist-image ph-3"><div class="artist-overlay"></div><span class="rune-symbol">⟁</span></div><div class="artist-info"><h3 style="color:var(--color-text-muted); font-style:italic;">Void Focus</h3><p style="color:var(--color-mythic-gold); font-size:0.8rem; letter-spacing:1px; font-family:var(--font-heading-alt);">TBD...</p></div></div>
                     `;
                 } else {
-                    // IF POPULATED: Inject dynamic Artist blocks (Re-using background image slots 1 to 3 depending on row modulo)
-                    artistContainer.innerHTML = artRes.data.map((artist, idx) => `
+                    // LIVE OVERWRITE: Perfectly scaled physical Artist Renders mapping via Background IMG
+                    artistContainer.innerHTML = artRes.data.map(artist => `
                         <div class="artist-card">
-                            <div class="artist-image ph-${(idx % 3) + 1}">
-                                <div class="artist-overlay"></div>
-                                <span class="rune-symbol">${artist.rune_symbol || '✧'}</span>
+<div class="artist-image" style="background-image: url('${artist.image_url || ''}'); background-size: cover; background-position: center top; height:350px; width: 100%;">                                <div class="artist-overlay"></div>
                             </div>
                             <div class="artist-info">
                                 <h3>${artist.name}</h3>
-                                <p style="color:var(--color-mythic-gold);">${artist.role}</p>
+                                <p style="color:var(--color-mythic-gold); font-size:0.85rem; letter-spacing:1px; text-transform:uppercase; font-family:var(--font-heading-alt);">${artist.role}</p>
                             </div>
                         </div>
                     `).join('');
                 }
             }
+         }
 
             // Fetch Sponsors
             const s1 = document.getElementById('dyn-sponsor-1');

@@ -100,8 +100,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     window.publishFaq = async (id, q) => { const a = document.getElementById(`ans-${id}`).value; if(a) { await fetch('/api/admin/publish-faq', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({admin_reg:user.reg_no, query_id: id, question: q, answer: a})}); renderAdminUI(); }};
 
     window.addArtist = async () => {
-        const n = document.getElementById('art-name').value, r = document.getElementById('art-role').value, sm = document.getElementById('art-rune').value;
-        if(n&&r) { await fetch('/api/admin/add-artist', { method:'POST', headers:{'Content-Type': 'application/json'}, body:JSON.stringify({ admin_reg: user.reg_no, name: n, role: r, rune: sm || '✨' }) }); renderAdminUI(); }
+        const n = document.getElementById('art-name').value;
+        const r = document.getElementById('art-role').value;
+        const imgLink = document.getElementById('art-image').value;
+        
+        if (n && r) { 
+            await fetch('/api/admin/add-artist', { 
+                method: 'POST', 
+                headers: { 'Content-Type': 'application/json' }, 
+                body: JSON.stringify({ admin_reg: user.reg_no, name: n, role: r, image_url: imgLink }) 
+            }); 
+            // Wipe forms post-add natively 
+            document.getElementById('art-name').value = '';
+            document.getElementById('art-role').value = '';
+            document.getElementById('art-image').value = '';
+            renderAdminUI(); 
+        }
     };
     window.delArt = async (id) => { await fetch('/api/admin/del-artist', { method:'POST', headers:{'Content-Type': 'application/json'}, body:JSON.stringify({ admin_reg: user.reg_no, id: id }) }); renderAdminUI(); };
 

@@ -69,16 +69,18 @@
         </div>
 
         <!-- TAB 4: ARTISTS DYNAMICS -->
+        <!-- TAB 4: ARTISTS DYNAMICS -->
         <div id="tab-pantheon" class="tab-content">
-            <h3 style="color:var(--color-blood-red);">Artist Herald Setup</h3>
-            <p style="margin-bottom:2rem;">Overwrite the "TBA" placeholds instantly natively from database insertion!</p>
-            <div class="ticket-card" style="max-width:500px; padding: 2rem; margin-bottom:2rem;">
-                <input type="text" id="art-name" class="auth-input" placeholder="Artist Real Name (eg. Nucleya)" style="margin-bottom:10px;">
-                <input type="text" id="art-role" class="auth-input" placeholder="Musical Trait (eg. Bass Ritual)" style="margin-bottom:10px;">
-                <input type="text" id="art-rune" class="auth-input" placeholder="Any Emoji/Rune Symbol (eg. ᛟ)" style="margin-bottom:10px;" maxlength="4">
-                <button onclick="addArtist()" class="btn-primary" style="width:100%;">Instantiate To Website Grid</button>
+            <h3 style="color:var(--color-mythic-gold);">Artist Herald Setup</h3>
+            
+            <div style="max-width:400px; display:flex; flex-direction:column; gap:0.5rem; margin: 1.5rem 0 3rem 0;">
+                <input type="text" id="art-name" class="auth-input" placeholder="Real Name (e.g. Aetheria)" style="padding: 0.8rem;">
+                <input type="text" id="art-role" class="auth-input" placeholder="Musical Genre/Title (e.g. Vocals)" style="padding: 0.8rem;">
+                <input type="text" id="art-image" class="auth-input" placeholder="Image URL (.jpg or .png Web Link)" style="padding: 0.8rem;">
+                <button onclick="addArtist()" class="btn-primary" style="margin-top:0.5rem; padding: 0.8rem; font-size: 0.85rem;">Load Into Public Grid</button>
             </div>
-            <h4>Current Active Blocklist:</h4>
+            
+            <h4 style="border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom: 0.5rem; margin-bottom:1rem;">Current Herald Roster</h4>
             <div id="manage-artist-list" class="recent-list" style="max-height: 400px; padding-bottom:2rem;"></div>
         </div>
 

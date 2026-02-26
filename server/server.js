@@ -124,15 +124,15 @@ app.get('/api/sponsors', async (req, res) => {
 // ==================== ADMIN CMS DYNAMIC CONTROLS ====================
 
 // Add & Delete Artist
+// Add & Delete Artist (Using External URLs now!)
 app.post('/api/admin/add-artist', async (req, res) => {
-    const { admin_reg, name, role, rune } = req.body;
+    const { admin_reg, name, role, image_url } = req.body;
     if (admin_reg !== '235805126') return res.status(403).json({ success: false });
     try {
-        await pool.query('INSERT INTO artists (name, role, rune_symbol) VALUES ($1, $2, $3)', [name, role, rune]);
+        await pool.query('INSERT INTO artists (name, role, image_url) VALUES ($1, $2, $3)', [name, role, image_url]);
         res.json({ success: true });
     } catch(err) { res.status(500).json({success:false}); }
 });
-
 app.post('/api/admin/del-artist', async (req, res) => {
     const { admin_reg, id } = req.body;
     if (admin_reg !== '235805126') return res.status(403).json({ success: false });

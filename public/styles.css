@@ -683,14 +683,16 @@ h6 {
 }
 
 .pantheon-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 2.5rem;
 }
 
 .artist-card {
+    width: 100%;
+    max-width: 350px; /* THIS IS THE FIX! It stops the card from stretching! */
     background: rgba(10, 10, 10, 0.8);
-    /* Made this much lighter from 0.8 to 0.3 */
     border: var(--glass-border);
     border-radius: 8px;
     overflow: hidden;
