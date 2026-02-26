@@ -209,9 +209,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // 5c. Prevent authenticated users from going back into ticket checkout again directly
         const ticketBtns = document.querySelectorAll('.ticket-card .ticket-btn');
         ticketBtns.forEach(btn => {
-            btn.textContent = "Summoned";
-            btn.href = "javascript:void(0)"; 
-            // In a future step, this void(0) could launch the Payment Dashboard Instead!
+            btn.textContent = "Summoned (View Pass)";
+            btn.style.color = "var(--color-blood-red)";
+            btn.style.borderColor = "var(--color-blood-red)";
+            btn.href = "dashboard.html"; // Send them straight to the Grimoire!
         });
 
         // === 6. THE ORACLE FAQ ENGINE FETCH / INTERACTION SYSTEM ====
