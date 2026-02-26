@@ -252,6 +252,64 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (e){}
     }
     fetchFaqs();
+    // === 7. DYNAMIC CONTENT FETCH (PANTHEON & SPONSORS) ===
+    const fetchDynamics = async () => {
+        try {
+            // Fetch Artists
+            const artistContainer = document.getElementById('dynamic-artists');
+            if (artistContainer) {
+                const artRes = await fetch('/api/artists').then(r => r.json());
+                
+                // IF EMPTY: Show Placeholders natively
+                if (artRes.data.length === 0) {
+                    artistContainer.innerHTML = `
+                        <div class="artist-card"><div class="artist-image ph-1"><div class="artist-overlay"></div><span class="rune-symbol">?</span></div><div class="artist-info"><h3 style="color:var(--color-text-muted);">First Headliner</h3><p style="color:var(--color-mythic-gold);">TBA...</p></div></div>
+                        <div class="artist-card"><div class="artist-image ph-2"><div class="artist-overlay"></div><span class="rune-symbol">❖</span></div><div class="artist-info"><h3 style="color:var(--color-text-muted);">Dark Ritual</h3><p style="color:var(--color-mythic-gold);">TBA...</p></div></div>
+                        <div class="artist-card"><div class="artist-image ph-3"><div class="artist-overlay"></div><span class="rune-symbol">⟁</span></div><div class="artist-info"><h3 style="color:var(--color-text-muted);">The Weaver</h3><p style="color:var(--color-mythic-gold);">TBA...</p></div></div>
+                    `;
+                } else {
+                    // IF POPULATED: Inject dynamic Artist blocks (Re-using background image slots 1 to 3 depending on row modulo)
+                    artistContainer.innerHTML = artRes.data.map((artist, idx) => `
+                        <div class="artist-card">
+                            <div class="artist-image ph-${(idx % 3) + 1}">
+                                <div class="artist-overlay"></div>
+                                <span class="rune-symbol">${artist.rune_symbol || '✧'}</span>
+                            </div>
+                            <div class="artist-info">
+                                <h3>${artist.name}</h3>
+                                <p style="color:var(--color-mythic-gold);">${artist.role}</p>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            }
+
+            // Fetch Sponsors
+            const s1 = document.getElementById('dyn-sponsor-1');
+            const s2 = document.getElementById('dyn-sponsor-2');
+            if (s1 && s2) {
+                const spRes = await fetch('/api/sponsors').then(r => r.json());
+                
+                let sponsorHTML = '';
+                // IF EMPTY: Scroll TBD across domain
+                if (spRes.data.length === 0) {
+                    sponsorHTML = `
+                        <div class="logo-box" style="opacity:0.3;">TBD</div>
+                        <div class="logo-box" style="opacity:0.3;">ALIGNING SOON</div>
+                        <div class="logo-box" style="opacity:0.3;">TBD</div>
+                    `;
+                } else {
+                    sponsorHTML = spRes.data.map(sp => `
+                        <a href="${sp.link_url !== '#' ? sp.link_url : 'javascript:void(0)'}" target="${sp.link_url !== '#' ? '_blank' : ''}" class="logo-box" style="text-decoration:none;">${sp.name.toUpperCase()}</a>
+                    `).join('');
+                }
+                
+                s1.innerHTML = sponsorHTML;
+                s2.innerHTML = sponsorHTML; // Seamless duplicate
+            }
+        } catch(e){}
+    }
+    fetchDynamics();
 
     } else if (hasAccount === 'true') {
         // SCENARIO 2: Logged out, but system remembers they have an account 

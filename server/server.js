@@ -102,6 +102,64 @@ app.post('/api/admin/stats', async (req, res) => {
         res.status(200).json({ success: true, totalUsers: count.rows[0].count, allUsers: activeUsers.rows, queries: pendingQueries.rows });
     } catch (error) { res.status(500).json({ success: false }); }
 });
+// ==================== DYNAMIC PUBLIC FETCH ROUTES ====================
+
+// Get Artists
+app.get('/api/artists', async (req, res) => {
+    try {
+        const artists = await pool.query('SELECT * FROM artists ORDER BY id ASC');
+        res.json({ success: true, data: artists.rows });
+    } catch(err) { res.status(500).json({success:false}); }
+});
+
+// Get Sponsors
+app.get('/api/sponsors', async (req, res) => {
+    try {
+        const sponsors = await pool.query('SELECT * FROM sponsors ORDER BY id ASC');
+        res.json({ success: true, data: sponsors.rows });
+    } catch(err) { res.status(500).json({success:false}); }
+});
+
+
+// ==================== ADMIN CMS DYNAMIC CONTROLS ====================
+
+// Add & Delete Artist
+app.post('/api/admin/add-artist', async (req, res) => {
+    const { admin_reg, name, role, rune } = req.body;
+    if (admin_reg !== '235805126') return res.status(403).json({ success: false });
+    try {
+        await pool.query('INSERT INTO artists (name, role, rune_symbol) VALUES ($1, $2, $3)', [name, role, rune]);
+        res.json({ success: true });
+    } catch(err) { res.status(500).json({success:false}); }
+});
+
+app.post('/api/admin/del-artist', async (req, res) => {
+    const { admin_reg, id } = req.body;
+    if (admin_reg !== '235805126') return res.status(403).json({ success: false });
+    try {
+        await pool.query('DELETE FROM artists WHERE id = $1', [id]);
+        res.json({ success: true });
+    } catch(err) { res.status(500).json({success:false}); }
+});
+
+// Add & Delete Sponsor
+app.post('/api/admin/add-sponsor', async (req, res) => {
+    const { admin_reg, name, link_url } = req.body;
+    if (admin_reg !== '235805126') return res.status(403).json({ success: false });
+    try {
+        await pool.query('INSERT INTO sponsors (name, link_url) VALUES ($1, $2)', [name, link_url || '#']);
+        res.json({ success: true });
+    } catch(err) { res.status(500).json({success:false}); }
+});
+
+app.post('/api/admin/del-sponsor', async (req, res) => {
+    const { admin_reg, id } = req.body;
+    if (admin_reg !== '235805126') return res.status(403).json({ success: false });
+    try {
+        await pool.query('DELETE FROM sponsors WHERE id = $1', [id]);
+        res.json({ success: true });
+    } catch(err) { res.status(500).json({success:false}); }
+});
 
 // Admin Bans a User
 app.post('/api/admin/banish', async (req, res) => {

@@ -135,9 +135,10 @@
     <section id="lineup" class="section alt-bg">
         <div class="container reveal">
             <h2 class="section-title">The Pantheon</h2>
-            <p class="section-subtitle">The Herald Identities are currently veiled in the abyss.</p>
-            <div class="pantheon-grid">
-                
+            <p class="section-subtitle">The Herald Identities will reveal when the alignment completes.</p>
+            <div class="pantheon-grid" id="dynamic-artists">
+                <!-- Javascript will inject Dynamic Cards OR Placeholders here -->
+            </div>
                 <!-- Placeholder Artist 1 (Wait for reveal to put actual IMG) -->
                 <!-- To swap an image later: put it in public folder and replace CSS background rule or use <img class="artist-img"> -->
                 <div class="artist-card">
@@ -234,22 +235,12 @@
             <h2 class="section-title">Our Sponsors</h2>
         </div>
         <div class="marquee-container">
-            <div class="marquee-content">
-                <div class="logo-box">ROG</div>
-                <div class="logo-box">ALIENWARE</div>
-                <div class="logo-box">MONSTER</div>
-                <div class="logo-box">DISCORD</div>
-                <div class="logo-box">NVIDIA</div>
-                <div class="logo-box">VALORANT</div>
+            <div class="marquee-content" id="dyn-sponsor-1">
+                <!-- JS will loop sponsor names here -->
             </div>
             <!-- Duplicate for seamless scrolling -->
-            <div class="marquee-content" aria-hidden="true">
-                <div class="logo-box">ROG</div>
-                <div class="logo-box">ALIENWARE</div>
-                <div class="logo-box">MONSTER</div>
-                <div class="logo-box">DISCORD</div>
-                <div class="logo-box">NVIDIA</div>
-                <div class="logo-box">VALORANT</div>
+            <div class="marquee-content" aria-hidden="true" id="dyn-sponsor-2">
+                <!-- JS loops same here -->
             </div>
         </div>
     </section>
