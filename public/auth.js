@@ -8,20 +8,20 @@ document.addEventListener('DOMContentLoaded', () => {
             const msgObj = document.getElementById('su-msg');
             msgObj.style.color = "var(--color-blood-red)";
 
-            const nameStr = document.getElementById('su-name').value;
-            const regStr = document.getElementById('su-reg').value;
-            const emailStr = document.getElementById('su-email').value;
-            const phoneStr = document.getElementById('su-phone').value;
+            const nameStr = document.getElementById('su-name').value.trim();
+            const regStr = document.getElementById('su-reg').value.trim();
+            const emailStr = document.getElementById('su-email').value.trim().toLowerCase();
+            const phoneStr = document.getElementById('su-phone').value.trim();
 
             // Strict Realm Validations
-            if (!/^\d{9}$/.test(regStr)) { 
-                msgObj.textContent = "Registration Number must be exactly 9 digits."; return; 
+            if (!/^(\d{9}|\d{12})$/.test(regStr)) { 
+                msgObj.textContent = "Registration Number must be exactly 9 or 12 digits."; return; 
             }
             if (!/^\d{10}$/.test(phoneStr)) { 
                 msgObj.textContent = "Earthly Phone must be exactly 10 digits."; return; 
             }
             if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]*learner\.manipal\.edu$/.test(emailStr)) {
-                msgObj.textContent = "Only sacred @learner.manipal.edu scrolls are permitted."; return; 
+                msgObj.textContent = "Only sacred @learner.manipal.edu mails are permitted."; return; 
             }
 
             msgObj.textContent = "Commencing Ritual...";
@@ -69,8 +69,8 @@ document.addEventListener('DOMContentLoaded', () => {
             msgObj.style.color = "var(--color-text-main)";
             msgObj.textContent = "Consulting The Fates...";
 
-            const emailStr = document.getElementById('lg-email').value;
-            const regStr = document.getElementById('lg-reg').value;
+            const emailStr = document.getElementById('lg-email').value.trim().toLowerCase();
+            const regStr = document.getElementById('lg-reg').value.trim();
 
             try {
                 const response = await fetch('/api/login', {

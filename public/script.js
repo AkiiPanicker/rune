@@ -112,6 +112,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     generateParticles();
 
+    // Lore 3D Rune Flipper logic 
+    const runeFlipper = document.getElementById('magic-rune-flipper');
+    if (runeFlipper) {
+        runeFlipper.addEventListener('click', () => {
+            const innerBox = runeFlipper.querySelector('.flip-inner-box');
+            if(innerBox) innerBox.classList.toggle('flipped');
+        });
+    }
+
     // 4. Parallax Background Scroll Effect
     const handleParallax = () => {
         const scrolled = window.scrollY;

@@ -99,104 +99,138 @@
                         reborn in the blinding glow of the stage. The prophecy foretold a night of unprecedented energy.
                         Will you answer the call?</p>
                 </div>
-                <div class="lore-visual">
-                    <div class="mythic-rune">ᛟ</div>
-                    <div class="glow-ring"></div>
+                <!-- Inside <section id="lore"> -->
+                <div class="lore-visual" id="magic-rune-flipper" style="perspective: 1000px; cursor: pointer;">
+                    <div class="flip-inner-box">
+                        
+                        <!-- Side A: Original Glowing Rune -->
+                        <div class="flip-side-front">
+                            <div class="mythic-rune">ᛟ</div>
+                            <div class="glow-ring"></div>
+                        </div>
+
+                        <!-- Side B: Hidden CCC Logo Reveal -->
+                        <div class="flip-side-back">
+                            <!-- Drop CCC_logo.png in the public folder to match this src! -->
+<img src="CCC_logo.png" alt="CCC Logo" style="
+    width: 220px; 
+    height: 220px; 
+    border-radius: 50%; 
+    background-color: #000; 
+    object-fit: contain; 
+    padding: 10px; 
+    border: 1px solid rgba(224, 170, 255, 0.3);
+    box-shadow: 0 0 30px rgba(224, 170, 255, 0.2), inset 0 0 15px rgba(255, 255, 255, 0.1); 
+    position: relative; 
+    z-index: 2;
+">                        </div>
+
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Lineup Section -->
+<!-- Lineup Section -->
     <section id="lineup" class="section alt-bg">
         <div class="container reveal">
             <h2 class="section-title">The Pantheon</h2>
-            <p class="section-subtitle">Behold the heralds of the dark age.</p>
+            <p class="section-subtitle">The Herald Identities are currently veiled in the abyss.</p>
             <div class="pantheon-grid">
-                <!-- Artist 1 -->
+                
+                <!-- Placeholder Artist 1 (Wait for reveal to put actual IMG) -->
+                <!-- To swap an image later: put it in public folder and replace CSS background rule or use <img class="artist-img"> -->
                 <div class="artist-card">
                     <div class="artist-image ph-1">
                         <div class="artist-overlay"></div>
-                        <span class="rune-symbol">ᛏ</span>
+                        <span class="rune-symbol">?</span>
                     </div>
                     <div class="artist-info">
-                        <h3>Aetheria</h3>
-                        <p>Ethereal Vocals & Synth</p>
+                        <h3 style="color:var(--color-text-muted); font-style: italic;">The First Headliner</h3>
+                        <p style="color:var(--color-mythic-gold);">Awaiting Oracle Confirmation...</p>
                     </div>
                 </div>
-                <!-- Artist 2 -->
+
+                <!-- Placeholder Artist 2 -->
                 <div class="artist-card">
                     <div class="artist-image ph-2">
                         <div class="artist-overlay"></div>
-                        <span class="rune-symbol">ᛟ</span>
+                        <span class="rune-symbol" style="font-size:3.5rem;">❖</span>
                     </div>
                     <div class="artist-info">
-                        <h3>Nyx Vanguard</h3>
-                        <p>Heavy Bass & Drone</p>
+                        <h3 style="color:var(--color-text-muted); font-style: italic;">The Dark Ritual</h3>
+                        <p style="color:var(--color-mythic-gold);">Awaiting Oracle Confirmation...</p>
                     </div>
                 </div>
-                <!-- Artist 3 -->
+
+                <!-- Placeholder Artist 3 -->
                 <div class="artist-card">
                     <div class="artist-image ph-3">
                         <div class="artist-overlay"></div>
-                        <span class="rune-symbol">ᛉ</span>
+                        <span class="rune-symbol">⟁</span>
                     </div>
                     <div class="artist-info">
-                        <h3>The Obsidian Order</h3>
-                        <p>Percussive Rituals</p>
+                        <h3 style="color:var(--color-text-muted); font-style: italic;">The Void Weaver</h3>
+                        <p style="color:var(--color-mythic-gold);">Awaiting Oracle Confirmation...</p>
                     </div>
                 </div>
+
             </div>
         </div>
     </section>
 
     <!-- Tickets Section -->
+    <!-- Registration / Roles Section -->
     <section id="tickets" class="section">
         <div class="container reveal">
-            <h2 class="section-title">Offerings</h2>
-            <p class="section-subtitle">Secure your passage to the dark realm.</p>
+            <h2 class="section-title">The Call To Arms</h2>
+            <p class="section-subtitle">Secure your role within the dark alignment.</p>
             <div class="tickets-grid">
-                <!-- Tier 1 -->
+                
+                <!-- Role 1: Standard Fest Goer -->
                 <div class="ticket-card">
                     <div class="ticket-header">
                         <h3>Mortal</h3>
-                        <p class="price" style="font-size:1.5rem; letter-spacing:4px; color:var(--color-blood-red)">FREE ADMIT</p>
+                        <p class="price" style="font-size:1.5rem; letter-spacing:4px; color:var(--color-blood-red)">ATTENDEE</p>
                     </div>
                     <ul class="ticket-features">
-                        <li>General Admission</li>
-                        <li>Access to mortal plains</li>
-                        <li>Standard summoning circle</li>
+                        <li>General access to the fest grounds</li>
+                        <li>Witness the Pantheon acts</li>
+                        <li>Receive personal Domain Pass (QR)</li>
                     </ul>
-                    <a href="signup.html" class="btn-secondary ticket-btn">Claim Pass</a>
+                    <a href="signup.html" class="btn-secondary ticket-btn">Enroll as Mortal</a>
                 </div>
-                <!-- Tier 2 -->
+
+                <!-- Role 2: Volunteer Taskforce -->
                 <div class="ticket-card featured">
-                    <div class="featured-badge">Most Chosen</div>
+                    <div class="featured-badge">Join the Legion</div>
                     <div class="ticket-header">
-                        <h3>Awakened</h3>
-                        <p class="price" style="font-size:1.5rem; letter-spacing:4px; color:var(--color-blood-red)">PRIORITY FREE</p>
+                        <h3>Vanguard</h3>
+                        <p class="price" style="font-size:1.5rem; letter-spacing:4px; color:var(--color-text-main)">VOLUNTEER</p>
                     </div>
                     <ul class="ticket-features">
-                        <li>Priority Admission</li>
-                        <li>Access to elevated realms</li>
-                        <li>Exclusive mythic merch</li>
-                        <li>Early entry</li>
+                        <li>Help orchestrate the chaos</li>
+                        <li>Priority zone clearances</li>
+                        <li>Official CCC recognition hours</li>
+                        <li>Directly serve the Realm Core</li>
                     </ul>
-                    <a href="#" class="btn-primary ticket-btn">Claim Pass</a>
+                    <a href="signup.html" class="btn-primary ticket-btn">Join The Vanguard</a>
                 </div>
-                <!-- Tier 3 -->
+
+                <!-- Role 3: Admin / Organizers -->
                 <div class="ticket-card">
                     <div class="ticket-header">
                         <h3>Deity</h3>
-                        <p class="price" style="font-size:1.5rem; letter-spacing:4px; color:var(--color-blood-red)">CORE ADMINS</p>
+                        <p class="price" style="font-size:1.5rem; letter-spacing:4px; color:var(--color-blood-red)">CCC CORE</p>
                     </div>
                     <ul class="ticket-features">
-                        <li>VIP Admission</li>
-                        <li>Backstage pantheon access</li>
-                        <li>Artist meet & greet</li>
-                        <li>Premium lounge & nectar</li>
+                        <li>Complete domain omniscience</li>
+                        <li>Control physical gate parameters</li>
+                        <li>Direct lore & matrix weaving</li>
+                        <li>System banish privileges</li>
                     </ul>
-                    <a href="signup.html" class="btn-secondary ticket-btn">Claim Pass</a>
+                    <!-- Sends directly to login because Deity/Admin is strictly internal -->
+                    <a href="login.html" class="btn-secondary ticket-btn">Access God Mode</a>
                 </div>
             </div>
         </div>
