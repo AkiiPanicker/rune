@@ -29,15 +29,25 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             // CMS Render Artists Blocklists
+            c// CMS Render Artists Blocklists with Reveal Tracker & Deluxe Deletion
             const artsRes = await fetch('/api/artists').then(r=>r.json());
             const artList = document.getElementById('manage-artist-list');
-            artList.innerHTML = artsRes.data.map(a => `<div style="padding:10px; border-bottom:1px solid rgba(255,255,255,0.05); display:flex; justify-content:space-between;"><span><strong>${a.name}</strong> - ${a.role}</span> <button onclick="delArt(${a.id})" style="color:red; background:none; border:none; cursor:pointer;">[x]</button></div>`).join('');
             
-            // CMS Render Sponsors Blocklists
-            const spRes = await fetch('/api/sponsors').then(r=>r.json());
-            const spList = document.getElementById('manage-sponsor-list');
-            spList.innerHTML = spRes.data.map(s => `<div style="padding:10px; border-bottom:1px solid rgba(255,255,255,0.05); display:flex; justify-content:space-between;"><span><strong>${s.name}</strong> (${s.link_url})</span> <button onclick="delSponsor(${s.id})" style="color:red; background:none; border:none; cursor:pointer;">[x]</button></div>`).join('');
-            
+            artList.innerHTML = artsRes.data.map(a => {
+                let rDate = a.reveal_date ? new Date(a.reveal_date).toLocaleString('en-IN') : 'Live instantly';
+                let stStyle = Date.now() < new Date(a.reveal_date).getTime() 
+                    ? `<span style="color:#f39c12; font-size:0.75rem;">(Hatching on: ${rDate})</span>` 
+                    : `<span style="color:#1aff1a; font-size:0.75rem;">(Revealed publicly!)</span>`;
+                
+                return `<div style="padding:10px 15px; margin-bottom: 5px; background:rgba(20,20,30,0.5); border:1px solid rgba(255,255,255,0.05); border-left:4px solid var(--color-mythic-gold); border-radius:4px; display:flex; justify-content:space-between; align-items:center;">
+                    <div>
+                        <strong style="font-size:1.1rem; color:#fff;">${a.name}</strong> 
+                        <span style="font-size:0.85rem; color:var(--color-blood-red); margin: 0 5px;">| ${a.role}</span> <br/>
+                        ${stStyle}
+                    </div>
+                    <button onclick="delArt(${a.id})" class="btn-primary" style="padding:0.4rem 0.8rem; font-size:0.8rem; border-color:red; color:red; cursor:pointer; background:rgba(255,0,0,0.1);">Delete Source [X]</button>
+                </div>`
+            }).join('');
         } catch(e){}
     };
     renderAdminUI();

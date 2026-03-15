@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1. Scroll Effects for Navbar & Reveal Animations
     const navbar = document.getElementById('navbar');
     const reveals = document.querySelectorAll('.reveal');
-
+    const concertDate = new Date("2026-03-31T00:00:00+05:30");
     const handleScroll = () => {
         if (!navbar) return;
         
@@ -30,7 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 2. Countdown Timer
     // Target exactly March 31st, 2026 at 12:00 AM (Midnight) in Indian Standard Time (IST, +05:30)
-    const concertDate = new Date("2026-03-31T00:00:00+05:30");
 
     const daysEl = document.getElementById('days');
     const hoursEl = document.getElementById('hours');
@@ -257,12 +256,9 @@ document.addEventListener('DOMContentLoaded', () => {
             // Fetch Artists
             const artistContainer = document.getElementById('dynamic-artists');
             if (artistContainer) {
-                // Fetch Artists
-            const artistContainer = document.getElementById('dynamic-artists');
-            if (artistContainer) {
                 const artRes = await fetch('/api/artists').then(r => r.json());
                 
-                // FALLBACK: Perfect 3-column Slim Mysterious Grids!
+                // FALLBACK: Perfect 3-column Slim Mysterious Grids if DB is completely empty!
                 if (artRes.data.length === 0) {
                     artistContainer.innerHTML = `
                         <div class="artist-card"><div class="artist-image ph-1"><div class="artist-overlay"></div><span class="rune-symbol">?</span></div><div class="artist-info"><h3 style="color:var(--color-text-muted); font-style:italic;">Phase I Form</h3><p style="color:var(--color-mythic-gold); font-size:0.8rem; letter-spacing:1px; font-family:var(--font-heading-alt);">TBD...</p></div></div>
@@ -270,63 +266,59 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="artist-card"><div class="artist-image ph-3"><div class="artist-overlay"></div><span class="rune-symbol">⟁</span></div><div class="artist-info"><h3 style="color:var(--color-text-muted); font-style:italic;">Void Focus</h3><p style="color:var(--color-mythic-gold); font-size:0.8rem; letter-spacing:1px; font-family:var(--font-heading-alt);">TBD...</p></div></div>
                     `;
                 } else {
-                    // LIVE OVERWRITE: Perfectly scaled physical Artist Renders mapping via Background IMG
-                    // New Master Renderer Core for Pantheons
-artistContainer.innerHTML = artRes.data.map(artist => {
-    
-    // We get "Now", "Start (created_at)" and "Goal (reveal_date)" in raw ms time.
-    const nowMs = Date.now();
-    const revealMs = new Date(artist.reveal_date).getTime();
-    
-    // Fallback if they were created before we patched the Database
-    const startMs = new Date(artist.created_at || "2025-01-01T00:00:00").getTime(); 
+                    // LIVE OVERWRITE: The Master Renderer Core
+                    const nowMs = Date.now();
+                    
+                    artistContainer.innerHTML = artRes.data.map(artist => {
+                        // Extract "Now", "Start", and "Goal" timestamps
+                        const revealMs = new Date(artist.reveal_date).getTime();
+                        const startMs = new Date(artist.created_at || "2025-01-01T00:00:00").getTime(); 
 
-    // Has it surpassed the deadline? Or was no real deadline given? Reveal them instantly.
-    if (nowMs >= revealMs || isNaN(revealMs)) {
-        return `
-        <div class="artist-card" style="max-width:350px;">
-            <div class="artist-image" style="background-image: url('${artist.image_url}'); background-size: cover; background-position: center top; height:320px; width: 100%;">                                
-                <div class="artist-overlay"></div>
-            </div>
-            <div class="artist-info">
-                <h3 style="margin-bottom:0.2rem;">${artist.name}</h3>
-                <p style="color:var(--color-blood-red); font-size:0.85rem; letter-spacing:1px; text-transform:uppercase; font-family:var(--font-heading-alt);">${artist.role}</p>
-                <div class="description-block">${artist.description}</div>
-            </div>
-        </div>
-        `;
-    } 
+                        // SCENARIO 1: Surpassed deadline or instantly revealed -> Display fully!
+                        if (nowMs >= revealMs || isNaN(revealMs)) {
+                            return `
+                            <div class="artist-card" style="max-width:350px;">
+                                <div class="artist-image" style="background-image: url('${artist.image_url}'); background-size: cover; background-position: center top; height:320px; width: 100%;">                                
+                                    <div class="artist-overlay"></div>
+                                </div>
+                                <div class="artist-info" style="border-top:1px solid #9d4edd; min-height: 180px;">
+                                    <h3 style="margin-bottom:0.2rem;">${artist.name}</h3>
+                                    <p style="color:var(--color-blood-red); font-size:0.85rem; letter-spacing:1px; text-transform:uppercase; font-family:var(--font-heading-alt);">${artist.role}</p>
+                                    <div class="description-block">${artist.description}</div>
+                                </div>
+                            </div>
+                            `;
+                        } 
 
-    // IF NOT REVEALED: Run mysterious percent loader calculation UI!
-    else {
-        let totalSpan = revealMs - startMs;
-        let elapsed = nowMs - startMs;
-        let rawPercent = (elapsed / totalSpan) * 100;
-        
-        // Stop users from seeing 100% and being frustrated it didn't trigger, cap graphic logic cleanly
-        let visualPercent = Math.min(Math.max(rawPercent, 0), 99).toFixed(2);
-        
-        return `
-        <div class="artist-card" style="max-width:350px;">
-            <div class="summon-jar">
-                <div class="energy-fill" style="height: ${visualPercent}%"></div>
-                <div style="z-index: 5; text-align:center;">
-                    <div class="rune-symbol" style="animation: pulse-glow 3s infinite alternate;">❖</div>
-                    <p style="font-family: var(--font-heading-alt); color:var(--color-text-muted); letter-spacing:3px; margin-top:20px; text-shadow:0 0 5px #000;">SUMMONING PRESENCE</p>
-                    <div class="energy-percent-text">${visualPercent}%</div>
-                </div>
-            </div>
-            <div class="artist-info" style="border-top:1px solid #9d4edd; text-align:center; padding: 1.5rem;">
-                <h4 style="color:#5c506e;">REVEAL PENDING...</h4>
-            </div>
-        </div>
-        `;
-    }
+                        // SCENARIO 2: Still Pending -> Show animated tracker Jar
+                        else {
+                            // Run the baseline loader calculation
+                            let totalSpan = revealMs - startMs;
+                            let elapsed = nowMs - startMs;
+                            let rawPercent = (elapsed / totalSpan) * 100;
+                            let visualPercent = Math.min(Math.max(rawPercent, 0), 99).toFixed(2);
+                            
+                            // Return block specifically using "pending-artist", "data-start", and "data-reveal" tags!
+                            return `
+                            <div class="artist-card pending-artist" data-start="${startMs}" data-reveal="${revealMs}" style="max-width:350px;">
+                                <div class="summon-jar" style="height:320px; position:relative; overflow:hidden; background:#070312;">
+                                    <div class="energy-fill" style="position:absolute; bottom:0; left:0; width:100%; background:linear-gradient(to top, rgba(157, 78, 221, 0.4), rgba(224, 170, 255, 0.1)); border-top:2px solid var(--color-mythic-gold); transition:height 1s ease; height: ${visualPercent}%;"></div>
+                                    <div style="z-index: 5; text-align:center; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:100%;">
+                                        <div class="rune-symbol" style="animation: pulse-glow 3s infinite alternate; font-size:4rem; margin-bottom:-20px;">❖</div>
+                                        <p style="font-family: var(--font-heading-alt); color:var(--color-text-muted); font-size:0.8rem; letter-spacing:3px; margin-top:30px; text-shadow:0 0 5px #000;">SUMMONING PRESENCE</p>
+                                        <div class="energy-percent-text" style="font-size: 2rem; font-family:var(--font-heading); color:var(--color-mythic-gold); text-shadow:0 0 10px #000;">${visualPercent}%</div>
+                                    </div>
+                                </div>
+                                <div class="artist-info" style="border-top:1px solid #9d4edd; text-align:center; padding: 1.5rem; min-height: 180px;">
+                                    <h4 style="color:#5c506e;">REVEAL PENDING...</h4>
+                                </div>
+                            </div>
+                            `;
+                        }
 
-}).join('');
+                    }).join('');
                 }
             }
-         }
 
             // Fetch Sponsors
             const s1 = document.getElementById('dyn-sponsor-1');
@@ -351,8 +343,9 @@ artistContainer.innerHTML = artRes.data.map(artist => {
                 s1.innerHTML = sponsorHTML;
                 s2.innerHTML = sponsorHTML; // Seamless duplicate
             }
-        } catch(e){}
+        } catch(e) {}
     }
+    
     fetchDynamics();
 
     } else if (hasAccount === 'true') {
@@ -371,4 +364,4 @@ artistContainer.innerHTML = artRes.data.map(artist => {
         }
     }
 
-});
+}); 

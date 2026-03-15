@@ -10,7 +10,7 @@
     --color-mythic-gold: #e0aaff;
     /* Light purple/pinkish */
     --color-gold-glow: rgba(224, 170, 255, 0.4);
-    --color-text-main: #f8f6fc;
+    --color-text-main: #f5efff;
     --color-text-muted: #cdbae6;
 
     /* Typography */
@@ -54,7 +54,7 @@ body {
     /* Fallback */
     overflow-x: hidden;
     line-height: 1.6;
-    text-shadow: 0px 1px 3px rgba(0,0,0,0.8);
+    text-shadow: 0px 2px 4px rgba(0,0,0,0.8), 0px 0px 10px rgba(0,0,0,0.4);
 }
 
 /* Clouds Parallax */
