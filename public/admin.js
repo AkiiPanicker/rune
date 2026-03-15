@@ -100,22 +100,26 @@ document.addEventListener('DOMContentLoaded', async () => {
     window.publishFaq = async (id, q) => { const a = document.getElementById(`ans-${id}`).value; if(a) { await fetch('/api/admin/publish-faq', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({admin_reg:user.reg_no, query_id: id, question: q, answer: a})}); renderAdminUI(); }};
 
     window.addArtist = async () => {
-        const n = document.getElementById('art-name').value;
-        const r = document.getElementById('art-role').value;
-        const imgLink = document.getElementById('art-image').value;
+    const n = document.getElementById('art-name').value;
+    const r = document.getElementById('art-role').value;
+    const imgLink = document.getElementById('art-image').value;
+    const desc = document.getElementById('art-desc').value;
+    const rev = document.getElementById('art-reveal').value;
+    
+    if (n && r) { 
+        await fetch('/api/admin/add-artist', { 
+            method: 'POST', 
+            headers: { 'Content-Type': 'application/json' }, 
+            body: JSON.stringify({ admin_reg: user.reg_no, name: n, role: r, image_url: imgLink, description: desc, reveal_date: rev }) 
+        }); 
         
-        if (n && r) { 
-            await fetch('/api/admin/add-artist', { 
-                method: 'POST', 
-                headers: { 'Content-Type': 'application/json' }, 
-                body: JSON.stringify({ admin_reg: user.reg_no, name: n, role: r, image_url: imgLink }) 
-            }); 
-            // Wipe forms post-add natively 
-            document.getElementById('art-name').value = '';
-            document.getElementById('art-role').value = '';
-            document.getElementById('art-image').value = '';
-            renderAdminUI(); 
-        }
+        document.getElementById('art-name').value = '';
+        document.getElementById('art-role').value = '';
+        document.getElementById('art-image').value = '';
+        document.getElementById('art-desc').value = '';
+        document.getElementById('art-reveal').value = '';
+        renderAdminUI(); 
+    }
     };
     window.delArt = async (id) => { await fetch('/api/admin/del-artist', { method:'POST', headers:{'Content-Type': 'application/json'}, body:JSON.stringify({ admin_reg: user.reg_no, id: id }) }); renderAdminUI(); };
 

@@ -272,16 +272,59 @@ document.addEventListener('DOMContentLoaded', () => {
                     `;
                 } else {
                     // LIVE OVERWRITE: Perfectly scaled physical Artist Renders mapping via Background IMG
-                    artistContainer.innerHTML = artRes.data.map(artist => `
-                        <div class="artist-card">
-<div class="artist-image" style="background-image: url('${artist.image_url || ''}'); background-size: cover; background-position: center top; height:350px; width: 100%;">                                <div class="artist-overlay"></div>
-                            </div>
-                            <div class="artist-info">
-                                <h3>${artist.name}</h3>
-                                <p style="color:var(--color-mythic-gold); font-size:0.85rem; letter-spacing:1px; text-transform:uppercase; font-family:var(--font-heading-alt);">${artist.role}</p>
-                            </div>
-                        </div>
-                    `).join('');
+                    // New Master Renderer Core for Pantheons
+artistContainer.innerHTML = artRes.data.map(artist => {
+    
+    // We get "Now", "Start (created_at)" and "Goal (reveal_date)" in raw ms time.
+    const nowMs = Date.now();
+    const revealMs = new Date(artist.reveal_date).getTime();
+    
+    // Fallback if they were created before we patched the Database
+    const startMs = new Date(artist.created_at || "2025-01-01T00:00:00").getTime(); 
+
+    // Has it surpassed the deadline? Or was no real deadline given? Reveal them instantly.
+    if (nowMs >= revealMs || isNaN(revealMs)) {
+        return `
+        <div class="artist-card" style="max-width:350px;">
+            <div class="artist-image" style="background-image: url('${artist.image_url}'); background-size: cover; background-position: center top; height:320px; width: 100%;">                                
+                <div class="artist-overlay"></div>
+            </div>
+            <div class="artist-info">
+                <h3 style="margin-bottom:0.2rem;">${artist.name}</h3>
+                <p style="color:var(--color-blood-red); font-size:0.85rem; letter-spacing:1px; text-transform:uppercase; font-family:var(--font-heading-alt);">${artist.role}</p>
+                <div class="description-block">${artist.description}</div>
+            </div>
+        </div>
+        `;
+    } 
+
+    // IF NOT REVEALED: Run mysterious percent loader calculation UI!
+    else {
+        let totalSpan = revealMs - startMs;
+        let elapsed = nowMs - startMs;
+        let rawPercent = (elapsed / totalSpan) * 100;
+        
+        // Stop users from seeing 100% and being frustrated it didn't trigger, cap graphic logic cleanly
+        let visualPercent = Math.min(Math.max(rawPercent, 0), 99).toFixed(2);
+        
+        return `
+        <div class="artist-card" style="max-width:350px;">
+            <div class="summon-jar">
+                <div class="energy-fill" style="height: ${visualPercent}%"></div>
+                <div style="z-index: 5; text-align:center;">
+                    <div class="rune-symbol" style="animation: pulse-glow 3s infinite alternate;">❖</div>
+                    <p style="font-family: var(--font-heading-alt); color:var(--color-text-muted); letter-spacing:3px; margin-top:20px; text-shadow:0 0 5px #000;">SUMMONING PRESENCE</p>
+                    <div class="energy-percent-text">${visualPercent}%</div>
+                </div>
+            </div>
+            <div class="artist-info" style="border-top:1px solid #9d4edd; text-align:center; padding: 1.5rem;">
+                <h4 style="color:#5c506e;">REVEAL PENDING...</h4>
+            </div>
+        </div>
+        `;
+    }
+
+}).join('');
                 }
             }
          }

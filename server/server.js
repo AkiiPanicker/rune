@@ -156,6 +156,23 @@ app.post('/api/admin/del-artist', async (req, res) => {
         res.json({ success: true });
     } catch(err) { res.status(500).json({success:false}); }
 });
+// Add Artist (Now featuring Deep Lore & Timed Reveal)
+app.post('/api/admin/add-artist', async (req, res) => {
+    const { admin_reg, name, role, image_url, description, reveal_date } = req.body;
+    if (admin_reg !== '235805126') return res.status(403).json({ success: false });
+
+    // Use a default reveal date of way past if none provided, meaning instant reveal!
+    const rDate = reveal_date || new Date('2020-01-01');
+
+    try {
+        await pool.query(
+            'INSERT INTO artists (name, role, image_url, description, reveal_date) VALUES ($1, $2, $3, $4, $5)', 
+            [name, role, image_url, description || 'Entity lore is encrypted.', rDate]
+        );
+        res.json({ success: true });
+    } catch(err) { res.status(500).json({success:false}); }
+});
+
 
 // Add & Delete Sponsor
 app.post('/api/admin/add-sponsor', async (req, res) => {
