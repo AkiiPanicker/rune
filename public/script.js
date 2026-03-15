@@ -29,9 +29,8 @@ document.addEventListener('DOMContentLoaded', () => {
     handleScroll(); // Trigger once on load
 
     // 2. Countdown Timer
-    const concertDate = new Date();
-    concertDate.setDate(concertDate.getDate() + 30);
-    concertDate.setHours(21, 0, 0, 0); // 9 PM
+    // Target exactly March 31st, 2026 at 12:00 AM (Midnight) in Indian Standard Time (IST, +05:30)
+    const concertDate = new Date("2026-03-31T00:00:00+05:30");
 
     const daysEl = document.getElementById('days');
     const hoursEl = document.getElementById('hours');
