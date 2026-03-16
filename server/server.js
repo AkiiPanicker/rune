@@ -138,16 +138,9 @@ app.get('/api/sponsors', async (req, res) => {
 });
 
 
+// --- ARTIST ENDPOINTS ---
 
-// Add & Delete Artist (Using External URLs now!)
-app.post('/api/admin/add-artist', async (req, res) => {
-    const { admin_reg, name, role, image_url } = req.body;
-    if (admin_reg !== '235805126') return res.status(403).json({ success: false });
-    try {
-        await pool.query('INSERT INTO artists (name, role, image_url) VALUES ($1, $2, $3)', [name, role, image_url]);
-        res.json({ success: true });
-    } catch(err) { res.status(500).json({success:false}); }
-});
+// Delete Artist
 app.post('/api/admin/del-artist', async (req, res) => {
     const { admin_reg, id } = req.body;
     if (admin_reg !== '235805126') return res.status(403).json({ success: false });
@@ -156,24 +149,27 @@ app.post('/api/admin/del-artist', async (req, res) => {
         res.json({ success: true });
     } catch(err) { res.status(500).json({success:false}); }
 });
+
 // Add Artist (Now featuring Deep Lore & Timed Reveal)
 app.post('/api/admin/add-artist', async (req, res) => {
     const { admin_reg, name, role, image_url, description, reveal_date } = req.body;
     if (admin_reg !== '235805126') return res.status(403).json({ success: false });
 
-    // Use a default reveal date of way past if none provided, meaning instant reveal!
-    const rDate = reveal_date || new Date('2020-01-01');
+    // If Admin leaves the date box empty, assign it a past date so it reveals instantly!
+    // Using simple logic to prevent blank string database errors.
+    const finalDate = reveal_date ? reveal_date : '2020-01-01T00:00:00';
 
     try {
         await pool.query(
             'INSERT INTO artists (name, role, image_url, description, reveal_date) VALUES ($1, $2, $3, $4, $5)', 
-            [name, role, image_url, description || 'Entity lore is encrypted.', rDate]
+            [name, role, image_url, description || 'Entity lore is encrypted.', finalDate]
         );
         res.json({ success: true });
-    } catch(err) { res.status(500).json({success:false}); }
+    } catch(err) { 
+        console.error(err); // Prints errors to your Render logs so we can see what goes wrong
+        res.status(500).json({success:false}); 
+    }
 });
-
-
 // Add & Delete Sponsor
 app.post('/api/admin/add-sponsor', async (req, res) => {
     const { admin_reg, name, link_url } = req.body;
